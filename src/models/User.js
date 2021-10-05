@@ -13,10 +13,17 @@ module.exports = async () => {
       name: {
         type: DataTypes.STRING,
       },
+
+      salt: {
+        type: DataTypes.STRING,
+      },
       email: {
         type: DataTypes.STRING,
       },
 
+      password: {
+        type: DataTypes.STRING,
+      },
       phone: {
         type: DataTypes.ARRAY(DataTypes.INTEGER),
       },
@@ -27,6 +34,10 @@ module.exports = async () => {
 
       SeatSeatId: {
         type: DataTypes.INTEGER,
+      },
+      admin: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
     },
     { timestamps: true }

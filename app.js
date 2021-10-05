@@ -5,7 +5,8 @@ const bodyParser = require("body-parser");
 
 //Routes
 const adminRoute = require("./src/routes/admin");
-const userRoute = require("./src/routes/user");
+const bookRoute = require("./src/routes/booking");
+const authRoute = require("./src/routes/auth");
 
 //Database
 const sequelize = require("./src/config/database");
@@ -15,6 +16,7 @@ const User = require("./src/models/User");
 const Orders = require("./src/models/Orders");
 const Seats = require("./src/models/Seats");
 const Products = require("./src/models/Products");
+const Category = require("./src/models/Category");
 
 const app = express();
 
@@ -23,9 +25,11 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.use("/api", adminRoute);
-app.use("/api", userRoute);
+app.use("/api", bookRoute);
+app.use("/api", authRoute);
 
 const models = async () => {
+  await Category();
   await Products();
   await Seats();
   await Orders();

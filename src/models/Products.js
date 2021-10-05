@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Deferrable } = require("sequelize");
 const sequelize = require("../config/database");
 
 module.exports = async () => {
@@ -20,9 +20,31 @@ module.exports = async () => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+
+      category: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: sequelize.models.Categories,
+          key: "categoryId",
+          deferrable: Deferrable.INITIALLY_IMMEDIATE,
+        },
+      },
+
+      pricePerSeat: {
+        type: DataTypes.INTEGER,
+      },
+
+      productImage: {
+        type: DataTypes.STRING(1000),
+      },
+      totalNumberOfSeats: {
+        type: DataTypes.INTEGER,
+      },
     },
     { timestamps: true }
   );
+
+  Product.belongsTo(sequelize.models.Categories);
 
   try {
     await Product.sync();

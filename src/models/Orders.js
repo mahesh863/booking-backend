@@ -25,7 +25,7 @@ module.exports = async () => {
     },
     { timestamps: true }
   );
-  // Order.hasMany(sequelize.models.Products);
+  Order.belongsTo(sequelize.models.Products);
 
   try {
     await Order.sync();
