@@ -1,34 +1,77 @@
 const sequelize = require("../config/database");
+const formidable = require("formidable");
+const admin = require("firebase-admin");
+const { v4: uuid } = require("uuid");
 
+//Create New Product
 exports.createProduct = async (req, res) => {
   const Products = sequelize.models.Products;
-  const {
-    productName,
-    productAddress,
-    totalNumberOfSeats,
-    pricePerSeat,
-    category,
-  } = req.body;
 
-  try {
-    await Products.create({
-      productName: productName,
-      productAddress: productAddress,
-      totalNumberOfSeats: totalNumberOfSeats,
-      pricePerSeat: pricePerSeat,
-      category: category,
-    });
-    res.status(200).json({
-      message: "Product Created Successfully!",
-    });
-  } catch (err) {
-    console.log(err);
-    res.status(400).json({
-      err: "Product Creation Failed!",
-    });
-  }
+  const form = new formidable.IncomingForm({
+    keepExtensions: true,
+  });
+
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      res.status(400).json({
+        err: "Failed To Upload!",
+      });
+    }
+
+    if (files.productImage) {
+      let path = files.productImage.path;
+      console.log(path);
+      const options = {
+        destination: `products/${uuid()}_${files.productImage.name}`,
+        predefinedAcl: "publicRead",
+        validation: "crc32c",
+      };
+      admin
+        .storage()
+        .bucket()
+        .upload(path, options, async (err, file, apiResponse) => {
+          if (err || !file) {
+            return res.status(400).json({
+              err: "Failed To Upload!",
+            });
+          }
+
+          if (file) {
+            const imageUrl = file.publicUrl();
+            const {
+              productName,
+              productAddress,
+              totalNumberOfSeats,
+              pricePerSeat,
+              category,
+              isFeatured,
+            } = fields;
+
+            try {
+              await Products.create({
+                productName: productName,
+                productAddress: productAddress,
+                totalNumberOfSeats: totalNumberOfSeats,
+                pricePerSeat: pricePerSeat,
+                category: category,
+                productImage: imageUrl,
+                isFeatured: isFeatured,
+              });
+              res.status(200).json({
+                message: "Product Created Successfully!",
+              });
+            } catch (err) {
+              console.log(err);
+              res.status(400).json({
+                err: "Product Creation Failed!",
+              });
+            }
+          }
+        });
+    }
+  });
 };
-
+//Edit Product
 exports.editProduct = async (req, res) => {
   const Products = sequelize.models.Products;
   const {
@@ -65,6 +108,7 @@ exports.editProduct = async (req, res) => {
   }
 };
 
+//Delete Product
 exports.deleteProduct = async (req, res) => {
   const Products = sequelize.models.Products;
   const { productId } = req.body;
@@ -113,9 +157,6 @@ exports.createSeats = async (req, res) => {
   var { productId, showTime, showDate } = req.body;
 
   const { pricePerSeat, totalNumberOfSeats } = req.product;
-  console.log(showTime);
-  console.log(showDate);
-  console.log(productId);
 
   const check = await Seats.findAll({
     where: {

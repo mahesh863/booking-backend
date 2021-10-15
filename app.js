@@ -11,6 +11,10 @@ const authRoute = require("./src/routes/auth");
 //Database
 const sequelize = require("./src/config/database");
 
+//Firebase
+const firebaseConfig = require("./src/config/firebaseConfig");
+const admin = require("firebase-admin");
+
 //Models
 const User = require("./src/models/User");
 const Orders = require("./src/models/Orders");
@@ -20,6 +24,7 @@ const Category = require("./src/models/Category");
 
 const app = express();
 
+admin.initializeApp(firebaseConfig);
 app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json());

@@ -25,16 +25,13 @@ module.exports = async () => {
         type: DataTypes.STRING,
       },
       phone: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        type: DataTypes.INTEGER,
       },
 
       orders: {
         type: DataTypes.ARRAY(DataTypes.STRING),
       },
 
-      SeatSeatId: {
-        type: DataTypes.INTEGER,
-      },
       admin: {
         type: DataTypes.INTEGER,
         defaultValue: 0,

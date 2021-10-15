@@ -36,9 +36,14 @@ module.exports = async () => {
 
       productImage: {
         type: DataTypes.STRING(1000),
+        defaultValue: "",
       },
       totalNumberOfSeats: {
         type: DataTypes.INTEGER,
+      },
+      isFeatured: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
     },
     { timestamps: true }

@@ -13,22 +13,24 @@ module.exports = async () => {
 
       productDetails: {
         type: DataTypes.INTEGER,
-        references: {
-          model: "Products",
-          key: "productId",
-        },
       },
+      seats: {
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
+      },
+      date: { type: DataTypes.DATE },
 
+      time: {
+        type: DataTypes.TIME,
+      },
       orderDateAndTime: {
         type: DataTypes.DATE,
       },
     },
     { timestamps: true }
   );
-  Order.belongsTo(sequelize.models.Products);
 
   try {
-    await Order.sync();
+    await Order.sync({ force: true });
     console.log(">>> Order  Sync...");
   } catch (err) {
     console.log(err);

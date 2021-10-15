@@ -18,19 +18,16 @@ module.exports = async () => {
         },
       },
       seatDate: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATEONLY,
       },
       seatTime: {
-        type: DataTypes.STRING,
+        type: DataTypes.TIME,
       },
       seatNumber: {
         type: DataTypes.INTEGER,
       },
       seatPrice: {
         type: DataTypes.INTEGER,
-      },
-      bookedBy: {
-        type: DataTypes.STRING,
       },
       booked: {
         type: DataTypes.BOOLEAN,

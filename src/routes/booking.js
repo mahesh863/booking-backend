@@ -1,8 +1,5 @@
 const express = require("express");
 const {
-  bookSeats,
-  editBooking,
-  cancelBooking,
   viewAllSeats,
   getProductById,
   searchProducts,
@@ -11,6 +8,8 @@ const {
   searchForSeats,
   getNewAddition,
   searchProductById,
+  payments,
+  getFeaturedProducts,
 } = require("../controllers/booking");
 
 const router = express.Router();
@@ -19,20 +18,20 @@ const router = express.Router();
 router.param("productId", getProductById);
 
 //Routes
-
 //Seats
 router.post("/view/seats/:productId", viewAllSeats);
-router.post("/book/seats/:productId", bookSeats);
-router.put("/edit/booking/:productId", editBooking);
-router.delete("/cancel/booking/:productId", cancelBooking);
 router.post("/view/seats", searchForSeats);
 
 //Products
 router.post("/search/products", searchProducts);
 router.get("/new/addition/products", getNewAddition);
 router.post("/search/product/id", searchProductById);
+router.get("/featured/products", getFeaturedProducts);
 //Categories
 router.post("/get/products/category", getProductsByCategory);
 router.get("/get/all/categories", getAllCategories);
+
+//Payment
+router.post("/payment", payments);
 
 module.exports = router;
