@@ -1,6 +1,6 @@
 # This app has been made with Node and PostgreSQL
 
-###### The PostgreSQL database was chosen to solve the problem of double booking. PostgreSQL has row level locking feature. It was used to prevent the problem.
+###### The PostgreSQL database was chosen to solve the problem of double booking using PostgreSQL's row level locking feature.
 
 
 # Architecture
